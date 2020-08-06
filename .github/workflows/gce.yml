@@ -35,7 +35,7 @@ jobs:
 
         # bring down containers
         - name: Stop docker containers
-          run: sudo docker-compose down
+          run: cd ~/app && sudo docker-compose down
 
         # update local repo
         - name: Fetch and pull changes
