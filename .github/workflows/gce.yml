@@ -29,7 +29,19 @@ jobs:
             service_account_key: ${{ secrets.GCE_SA_KEY }}
             project_id: ${{ secrets.GCE_PROJECT }}
 
-        # Copy to remote 
-        - name: Copy to remote
-          run: gcloud compute ssh ${{ secrets.GCE_INSTANCE_NAME }} --zone ${{ secrets.GCE_INSTANCE_ZONE }} --project ${{ secrets.GCE_PROJECT }} && ls
+        # ssh to to remote 
+        - name: SSH into remote
+          run: gcloud compute ssh ${{ secrets.GCE_INSTANCE_NAME }} --zone ${{ secrets.GCE_INSTANCE_ZONE }} --project ${{ secrets.GCE_PROJECT }}
+
+        # bring down containers
+        - name: Stop docker containers
+          run: sudo docker-compose down
+
+        # update local repo
+        - name: Fetch and pull changes
+          run: git fetch && git pull
+
+        # start up containers
+        - name: Start docker containers
+          run: sudo docker-compose up
 
