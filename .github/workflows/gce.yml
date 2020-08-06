@@ -32,16 +32,20 @@ jobs:
         # ssh to to remote 
         - name: SSH into remote
           run: gcloud compute ssh ${{ secrets.GCE_INSTANCE_NAME }} --zone ${{ secrets.GCE_INSTANCE_ZONE }} --project ${{ secrets.GCE_PROJECT }}
+        
+        # list files 
+        - name: list files
+          run: pwd && ls
 
-        # bring down containers
-        - name: Stop docker containers
-          run: cd ~/app && sudo docker-compose down
+        # # bring down containers
+        # - name: Stop docker containers
+        #   run: cd ~/app && sudo docker-compose down
 
-        # update local repo
-        - name: Fetch and pull changes
-          run: git fetch && git pull
+        # # update local repo
+        # - name: Fetch and pull changes
+        #   run: git fetch && git pull
 
-        # start up containers
-        - name: Start docker containers
-          run: sudo docker-compose up -d
+        # # start up containers
+        # - name: Start docker containers
+        #   run: sudo docker-compose up -d
 
