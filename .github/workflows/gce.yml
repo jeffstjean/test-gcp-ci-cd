@@ -43,5 +43,5 @@ jobs:
 
         # start up containers
         - name: Start docker containers
-          run: sudo docker-compose up
+          run: sudo docker-compose up -d
 
