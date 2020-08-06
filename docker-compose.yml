@@ -1,0 +1,29 @@
+version: '3'
+services:
+    api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+        image: api-image
+        container_name: api
+        restart: unless-stopped
+        networks:
+            - app-network
+    proxy:
+        image: nginx:mainline-alpine
+        container_name: proxy
+        restart: unless-stopped 
+        env_file: .env
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./proxy:/etc/nginx/
+        networks:
+            - app-network
+        depends_on: 
+            - api
+
+networks:
+    app-network:
+        driver: bridge
