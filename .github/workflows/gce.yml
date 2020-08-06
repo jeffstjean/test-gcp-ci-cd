@@ -35,5 +35,5 @@ jobs:
 
         # Copy to remote 
         - name: Copy to remote
-          run: gcloud compute scp --recurse ./ ${{ secrets.GCE_INSTANCE_NAME }}:~ --zone ${{ secrets.GCE_INSTANCE_ZONE }} --project ${{ secrets.GCE_PROJECT }}
+          run: gcloud compute scp --recurse ~/ ${{ secrets.GCE_INSTANCE_NAME }}:~ --zone ${{ secrets.GCE_INSTANCE_ZONE }} --project ${{ secrets.GCE_PROJECT }}
 
