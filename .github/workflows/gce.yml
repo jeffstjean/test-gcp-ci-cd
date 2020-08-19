@@ -21,31 +21,20 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v2 
 
-        # setup GCP cli
-        - name: Setup GCP cli
-          uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        # build
+        - name: Build docker image
+          run: docker build -t jeffstjean/enactushacks_nodejs ./api
+
+        # push
+        - name: Publish docker image
+          run: docker push jeffstjean/enactushacks_nodejs
+
+        # deploy
+        - name: Deploy to digitalocean
+          uses: sagebind/docker-swarm-deploy-action@v2
           with:
-            version: '290.0.1'
-            service_account_key: ${{ secrets.GCE_SA_KEY }}
-            project_id: ${{ secrets.GCE_PROJECT }}
-
-        # ssh to to remote 
-        - name: SSH into remote
-          run: gcloud compute ssh ${{ secrets.GCE_INSTANCE_NAME }} --zone ${{ secrets.GCE_INSTANCE_ZONE }} --project ${{ secrets.GCE_PROJECT }}
-        
-        # list files 
-        - name: list files
-          run: pwd && ls
-
-        # # bring down containers
-        # - name: Stop docker containers
-        #   run: cd ~/app && sudo docker-compose down
-
-        # # update local repo
-        # - name: Fetch and pull changes
-        #   run: git fetch && git pull
-
-        # # start up containers
-        # - name: Start docker containers
-        #   run: sudo docker-compose up -d
+            remote_host: ssh://${{ secrets.PROD_USERNAME }}@${{ secrets.PROD_HOST }}
+            ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+            ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+            args: stack deploy -c docker-compose.yml eh_prod
 
