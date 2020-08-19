@@ -7,7 +7,7 @@ const app = express();
 
 // routes
 app.get('/', (req, res) => {
-  res.send(`<h3>It's ${os.hostname()}! HOLY :D</h3>`);
+  res.send(`<h3>It's ${os.hostname()}.</h3>`);
 })
 
 app.listen(port, () => {

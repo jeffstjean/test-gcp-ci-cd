@@ -1,4 +1,4 @@
-name: Build, Push and Deploy to Digital Ocean
+name: Build, Push and Deploy to Production Server
 
 on:
     push:
@@ -12,29 +12,24 @@ env:
 
 jobs:
     setup-build-deploy:
-        name: Setup, build, and deploy
+        name: Build, Push and Deploy
         runs-on: ubuntu-latest
 
         steps:
 
-        # checkout branch
         - name: Checkout
           uses: actions/checkout@v2 
 
-        # login to docker
         - name: Login to docker
           run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-        # build image
-        - name: Build docker image
+        - name: Build api docker image
           run: docker build -t jeffstjean/enactushacks_nodejs ./api
 
-        # push image
-        - name: Push docker image
+        - name: Push api docker image
           run: docker push jeffstjean/enactushacks_nodejs
 
-        # deploy
-        - name: Deploy to digitalocean
+        - name: Deploy to remote server
           uses: appleboy/ssh-action@master
           with:
             host: ${{ secrets.DEPLOY_HOST }}
