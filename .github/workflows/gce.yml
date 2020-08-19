@@ -33,26 +33,12 @@ jobs:
         - name: Push docker image
           run: docker push jeffstjean/enactushacks_nodejs
 
-        # install ssh keys
-        - name: Instal SSH key
-          uses: webfactory/ssh-agent@v0.4.0
+        deploy
+        - name: Deploy to digitalocean
+          uses: appleboy/ssh-action@master
           with:
-            ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-
-        # ssh to server
-        - name: SSH to server
-          run: ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}
-
-        # deploy
-        - name: Deploy to DigitalOcean
-          run: stack deploy -c test/docker-compose.yml eh_prod
-
-        # deploy
-        # - name: Deploy to digitalocean
-        #   uses: fifsky/ssh-action@master
-        #   with:
-        #     host: ${{ secrets.DEPLOY_HOST }}
-        #     user: ${{ secrets.DEPLOY_USER }}
-        #     ssh_private_key: ${{ secrets.DEPLOY_KEY }}
-        #     command: stack deploy -c test/docker-compose.yml eh_prod
+            host: ${{ secrets.DEPLOY_HOST }}
+            username: ${{ secrets.DEPLOY_USER }}
+            key: ${{ secrets.DEPLOY_KEY }}
+            command: stack deploy -c test/docker-compose.yml eh_prod
 
