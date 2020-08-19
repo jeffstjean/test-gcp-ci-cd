@@ -33,7 +33,7 @@ jobs:
         - name: Push docker image
           run: docker push jeffstjean/enactushacks_nodejs
 
-        deploy
+        # deploy
         - name: Deploy to digitalocean
           uses: sagebind/docker-swarm-deploy-action@v2
           with:
