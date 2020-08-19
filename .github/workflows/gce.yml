@@ -20,22 +20,25 @@ jobs:
         # checkout branch
         - name: Checkout
           uses: actions/checkout@v2 
-        
-        # build and push
-        - name: Build and push docker image
-          uses: docker/build-push-action@v1
-          with: 
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
-            repository: jeffstjean/enactushacks_nodejs
-            tags: latest
+
+        # login to docker
+        - name: Login to docker
+          runs: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+        # build image
+        - name: Login to docker
+          runs: docker build -t jeffstjean/enactushacks_nodejs ./api
+
+        # push image
+        - name: Login to docker
+          runs: docker build jeffstjean/enactushacks_nodejs
 
         # deploy
-        - name: Deploy to digitalocean
-          uses: sagebind/docker-swarm-deploy-action@v2
-          with:
-            remote_host: ssh://${{ secrets.PROD_USERNAME }}@${{ secrets.PROD_HOST }}
-            ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-            ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
-            args: stack deploy -c docker-compose.yml eh_prod
+        # - name: Deploy to digitalocean
+        #   uses: sagebind/docker-swarm-deploy-action@v2
+        #   with:
+        #     remote_host: ssh://${{ secrets.PROD_USERNAME }}@${{ secrets.PROD_HOST }}
+        #     ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        #     ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+        #     args: stack deploy -c docker-compose.yml eh_prod
 
