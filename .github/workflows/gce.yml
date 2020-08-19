@@ -37,8 +37,8 @@ jobs:
         - name: Deploy to digitalocean
           uses: fifsky/ssh-action@master
           with:
-            host: ${{ secrets.PROD_HOST }}
-            user: ${{ secrets.PROD_USERNAME }}
-            ssh_private_key: ${{ secrets.PROD_PRIVATE_KEY }}
+            host: ${{ secrets.DEPLOY_HOST }}
+            user: ${{ secrets.DEPLOY_USER }}
+            ssh_private_key: ${{ secrets.DEPLOY_KEY }}
             command: stack deploy -c test/docker-compose.yml eh_prod
 
