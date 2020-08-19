@@ -33,7 +33,7 @@ jobs:
         - name: Push docker image
           run: docker push jeffstjean/enactushacks_nodejs
 
-        deploy
+        # deploy
         - name: Deploy to digitalocean
           uses: appleboy/ssh-action@master
           with:
