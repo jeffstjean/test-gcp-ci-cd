@@ -26,12 +26,12 @@ jobs:
           run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
         # build image
-        - name: Login to docker
+        - name: Build docker image
           run: docker build -t jeffstjean/enactushacks_nodejs ./api
 
         # push image
-        - name: Login to docker
-          run: docker build jeffstjean/enactushacks_nodejs
+        - name: Push docker image
+          run: docker push jeffstjean/enactushacks_nodejs
 
         # deploy
         # - name: Deploy to digitalocean
