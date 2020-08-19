@@ -40,5 +40,5 @@ jobs:
             host: ${{ secrets.DEPLOY_HOST }}
             username: ${{ secrets.DEPLOY_USER }}
             key: ${{ secrets.DEPLOY_KEY }}
-            command: stack deploy -c test/docker-compose.yml eh_prod
+            command: docker stack deploy -c test/docker-compose.yml eh_prod
 
